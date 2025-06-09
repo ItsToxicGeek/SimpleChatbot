@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI Chatbot</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="chatbox">
+        <h2>Customer Care Chatbot</h2>
+        <div id="chatlog"></div>
+        <input id="userInput" type="text" placeholder="Type your message..." autocomplete="off">
+        <button onclick="send()">Send</button>
+    </div>
+
+    <script>
+        function send() {
+            let userText = document.getElementById("userInput").value;
+            let chatlog = document.getElementById("chatlog");
+            chatlog.innerHTML += "<div>User: " + userText + "</div>";
+
+            fetch("/get?msg=" + userText)
+                .then(res => res.text())
+                .then(botReply => {
+                    chatlog.innerHTML += "<div>Bot: " + botReply + "</div>";
+                    document.getElementById("userInput").value = "";
+                    chatlog.scrollTop = chatlog.scrollHeight;
+                });
+        }
+    </script>
+</body>
+</html>
